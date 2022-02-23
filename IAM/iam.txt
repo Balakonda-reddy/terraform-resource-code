@@ -1,0 +1,36 @@
+
+
+provider aws {
+    region = "ap-south-1"
+}
+
+
+resource "aws_iam_user" "user"{
+    name = "balu1"
+    tags ={
+        Name = "balu1"
+    }
+}
+
+resource "aws_iam_policy" "policy" {
+    name = "policy"
+    policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:*",
+                "s3-object-lambda:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+})
+}
+
+resource "aws_iam_policy_attachment" "test-attach" {
+  name = "attach"
+  users     = ["balu1"]
+  policy_arn = "arn:aws:iam::274436039321:policy/policy"
+}
